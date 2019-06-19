@@ -6,15 +6,19 @@
 </head>
 <body>
 <h1>Create Note</h1>
+<br>
+<a href="/note">Back Note List</a>
 <form th:action="@{/create-note}" method="post" th:object="${note}">
     <table>
     <tr>
         <td>Title
         <td><input type="text" th:field="*{title}"></td>
+        <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></td>
     </tr>
     <tr>
         <td>Content</td>
         <td><textarea ncols="30" rows="10" th:field="*{content}"></textarea></td>
+        <td th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></td>
     </tr>
     <tr>
         <td>Note Type</td>

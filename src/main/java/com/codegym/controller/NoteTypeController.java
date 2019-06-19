@@ -4,6 +4,8 @@ import com.codegym.model.NoteType;
 import com.codegym.service.NoteTypeSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +29,15 @@ public class NoteTypeController {
         return modelAndView;
     }
     @PostMapping("create-notetype")
-    public String saveNoteType(@ModelAttribute("notetype") NoteType noteType){
-        noteTypeSevice.save(noteType);
-        return "redirect:notetype";
+    public ModelAndView saveNoteType(@Validated @ModelAttribute("notetype") NoteType noteType, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            ModelAndView modelAndView = new ModelAndView("notetypes/create");
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("notetypes/create");
+            noteTypeSevice.save(noteType);
+            return modelAndView;
+        }
     }
     @GetMapping("edit-notetype/{id}")
     public ModelAndView editNoteType(@PathVariable Long id){
@@ -38,9 +46,15 @@ public class NoteTypeController {
        return modelAndView;
     }
     @PostMapping("edit-notetype")
-    public String updateNoteType(@ModelAttribute("notetype") NoteType noteType){
-        noteTypeSevice.save(noteType);
-        return "redirect:notetype";
+    public ModelAndView updateNoteType(@Validated @ModelAttribute("notetype") NoteType noteType,BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            ModelAndView modelAndView = new ModelAndView("notetypes/edit");
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("notetypes/edit");
+            noteTypeSevice.save(noteType);
+            return modelAndView;
+        }
     }
     @GetMapping("delete-notetype/{id}")
     public ModelAndView deleteNoteType(@PathVariable Long id){

@@ -6,6 +6,8 @@
 </head>
 <body>
 <h1>Create Note Type</h1>
+<br>
+<a href="/notetype">Back to Note Type List</a>
 <form th:action="@{/create-notetype}" method="post" th:object="${notetype}">
     <table border="1">
         <tr>
@@ -13,12 +15,14 @@
             <td>
                 <input type="text" th:field="*{name}">
             </td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
         </tr>
         <tr>
             <td>Description</td>
             <td>
                 <input type="text" th:field="*{description}" th:width="200" th:height="200">
             </td>
+            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
         </tr>
     </table>
     <input type="submit" value="Create Note Type">

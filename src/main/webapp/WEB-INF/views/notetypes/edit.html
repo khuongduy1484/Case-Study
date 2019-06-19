@@ -6,16 +6,20 @@
 </head>
 <body>
 <h1>Edit Note Type</h1>
+<br>
+<a href="/notetype">Back to Note Type List</a>
 <form th:action="@{/edit-notetype}" method="post" th:object="${notetype}">
     <input type="hidden" th:field="*{id}">
     <table border="1">
         <tr>
             <td>Name</td>
             <td><input type="text" th:field="*{name}"></td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
         </tr>
         <tr>
             <td>Description</td>
             <td><input type="text" th:field="*{description}"></td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{description}"></td>
         </tr>
         <tr>
             <td>

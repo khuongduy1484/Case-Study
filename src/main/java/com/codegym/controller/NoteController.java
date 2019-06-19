@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,39 +22,44 @@ public class NoteController {
     private NoteSevice noteSevice;
     @Autowired
     private NoteTypeSevice noteTypeSevice;
+
     @ModelAttribute("notetype")
-    public Iterable<NoteType> noteTypes(){
+    public Iterable<NoteType> noteTypes() {
         return noteTypeSevice.fillAll();
     }
+
     @GetMapping("note")
-    public ModelAndView listNote(@RequestParam("search")Optional<String> search, @PageableDefault(value = 5)Pageable pageable){
-        Page<Note>notes;
-        if (search.isPresent()){
-            notes = noteSevice.findAllByTitleContaining(search.get(),pageable);
-        }else {
+    public ModelAndView listNote(@RequestParam("search") Optional<String> search, @PageableDefault(value = 5) Pageable pageable) {
+        Page<Note> notes;
+        if (search.isPresent()) {
+            notes = noteSevice.findAllByTitleContaining(search.get(), pageable);
+        } else {
             notes = noteSevice.fillAll(pageable);
         }
         ModelAndView modelAndView = new ModelAndView("notes/list");
-        modelAndView.addObject("notes",notes);
+        modelAndView.addObject("notes", notes);
         return modelAndView;
     }
+
     @GetMapping("create-note")
-    public ModelAndView createNOte(){
+    public ModelAndView createNOte() {
         ModelAndView modelAndView = new ModelAndView("notes/create");
-        modelAndView.addObject("note",new Note());
+        modelAndView.addObject("note", new Note());
         return modelAndView;
     }
+
     @PostMapping("create-note")
-    public String createNote(@ModelAttribute("note") Note note,@RequestParam("create") String creates ) {
-        String cancel = "Cancel";
-        String create = "Create";
-        if (creates.equals(cancel)) {
-           return "redirect:note";
-        } else {
+    public ModelAndView createNote(@Validated @ModelAttribute("note") Note note, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            ModelAndView modelAndView = new ModelAndView("notes/create");
+            return modelAndView;
+        }else {
+            ModelAndView modelAndView = new ModelAndView("notes/create");
             noteSevice.save(note);
-            return "redirect:note";
+            return modelAndView;
         }
     }
+
     @GetMapping("edit-note/{id}")
     public ModelAndView editNote(@PathVariable Long id){
         ModelAndView modelAndView = new ModelAndView("notes/edit");
@@ -60,9 +67,15 @@ public class NoteController {
         return modelAndView;
     }
     @PostMapping("edit-note")
-    public String updateNote(@ModelAttribute("note") Note note){
-        noteSevice.save(note);
-        return "redirect:note";
+    public ModelAndView updateNote(@Validated @ModelAttribute("note") Note note,BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            ModelAndView modelAndView = new ModelAndView("notes/edit");
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("notes/edit");
+            noteSevice.save(note);
+            return modelAndView;
+        }
     }
     @GetMapping("delete-note/{id}")
     public ModelAndView deleteNote(@PathVariable Long id){

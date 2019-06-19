@@ -1,6 +1,8 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -9,7 +11,11 @@ public class NoteType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @Size(min = 2,max = 50)
     private String name;
+    @NotEmpty
+    @Size(min = 2,max = 50)
     private String description;
     @OneToMany
     List<Note>notes;

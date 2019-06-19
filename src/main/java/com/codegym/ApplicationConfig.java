@@ -126,5 +126,11 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new NoteTypeFormatter(applicationContext.getBean(NoteTypeSevice.class)));
     }
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasenames("messages");
+        return messageSource;
+    }
 
 }
