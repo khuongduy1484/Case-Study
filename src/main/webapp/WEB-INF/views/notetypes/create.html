@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Note Type</title>
+</head>
+<body>
+<h1>Create Note Type</h1>
+<form th:action="@{/create-notetype}" method="post" th:object="${notetype}">
+    <table border="1">
+        <tr>
+            <td>NAME</td>
+            <td>
+                <input type="text" th:field="*{name}">
+            </td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>
+                <input type="text" th:field="*{description}" th:width="200" th:height="200">
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Create Note Type">
+</form>
+</body>
+</html>

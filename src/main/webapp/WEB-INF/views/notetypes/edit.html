@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Note Type</title>
+</head>
+<body>
+<h1>Edit Note Type</h1>
+<form th:action="@{/edit-notetype}" method="post" th:object="${notetype}">
+    <input type="hidden" th:field="*{id}">
+    <table border="1">
+        <tr>
+            <td>Name</td>
+            <td><input type="text" th:field="*{name}"></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><input type="text" th:field="*{description}"></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Edit Note Type">
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
